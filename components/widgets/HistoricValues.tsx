@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, Fragment } from "react"
 import {
   Table,
   TableBody,
@@ -27,11 +27,15 @@ export function HistoricValues() {
         setHistoricData(data)
 
         // Reverse the data array and set the initial visible data with formatted dates
-        const reversedData = [...data].reverse().map((entry) => ({
-          ...entry,
-          fecha: formatDate(entry.fecha),
-        }))
-        setVisibleData(reversedData.slice(0, showMoreCount))
+        const initialData = [...data]
+          .reverse()
+          .slice(0, showMoreCount)
+          .map((entry) => ({
+            ...entry,
+            fecha: formatDate(entry.fecha),
+          }))
+        setVisibleData(initialData)
+
         setIsLoading(false) // Set loading state to false after fetching
       } catch (error) {
         console.error("Error fetching data:", error)
@@ -72,23 +76,25 @@ export function HistoricValues() {
   return isLoading ? ( // Show a loading skeleton while fetching data
     <Skeleton className="w-dwh h-1/2" />
   ) : (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Fecha</TableHead>
-          <TableHead>Compra</TableHead>
-          <TableHead>Venta</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {visibleData.map((entry, index) => (
-          <TableRow key={index}>
-            <TableCell>{entry.fecha}</TableCell>
-            <TableCell>$ {entry.compra}</TableCell>
-            <TableCell>$ {entry.venta}</TableCell>
+    <Fragment>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Fecha</TableHead>
+            <TableHead>Compra</TableHead>
+            <TableHead>Venta</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
+        </TableHeader>
+        <TableBody>
+          {visibleData.map((entry, index) => (
+            <TableRow key={index}>
+              <TableCell>{entry.fecha}</TableCell>
+              <TableCell>$ {entry.compra}</TableCell>
+              <TableCell>$ {entry.venta}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
       {showMoreCount < historicData.length && (
         <Button
           onClick={handleShowMore}
@@ -99,6 +105,6 @@ export function HistoricValues() {
           Mostrar más
         </Button>
       )}
-    </Table>
+    </Fragment>
   )
 }
