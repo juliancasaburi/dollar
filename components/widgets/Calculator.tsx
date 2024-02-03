@@ -92,9 +92,9 @@ export function Calculator() {
     const pesosWithImpuestos =
       pesosWithoutTaxes + 2 * pesosWithoutTaxes30percent
 
-    form.setValue("impuestoPais", pesosWithoutTaxes30percent)
-    form.setValue("impuestoGanancias", pesosWithoutTaxes30percent)
-    form.setValue("pesosWithImpuestos", pesosWithImpuestos)
+    form.setValue("impuestoPais", parseFloat(pesosWithoutTaxes30percent.toFixed(2)))
+    form.setValue("impuestoGanancias", parseFloat(pesosWithoutTaxes30percent.toFixed(2)))
+    form.setValue("pesosWithImpuestos", parseFloat(pesosWithImpuestos.toFixed(2)))
   }
 
   return isLoading ? ( // Show a loading skeleton while fetching data
