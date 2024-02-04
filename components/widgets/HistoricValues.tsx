@@ -37,8 +37,8 @@ export function HistoricValues() {
         const filtered = allData
           .filter(
             (entry) =>
-              new Date(addDays(entry.fecha, 1)) >= selectedDateRange.from &&
-              new Date(entry.fecha) <= selectedDateRange.to
+              new Date(addDays(entry.fecha, 1)) >= (selectedDateRange.from ?? new Date()) &&
+              new Date(entry.fecha) <= (selectedDateRange.to ?? new Date())
           )
           .reverse()
 
