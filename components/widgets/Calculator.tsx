@@ -71,7 +71,7 @@ export function Calculator() {
 
   const handleDollarsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCopied(false)
-    const dollarsValue = parseFloat(e.target.value) || 0
+    const dollarsValue = parseFloat(e.target.value) || 1
     form.setValue("dollars", dollarsValue)
 
     // Fetch data and recalculate based on the new "dollars" value
@@ -125,14 +125,15 @@ export function Calculator() {
             <FormItem>
               <FormLabel>Cantidad de Dólares ($)</FormLabel>
               <FormControl>
-                <Input
-                  type="number"
-                  min="1.0"
-                  step="0.1"
-                  placeholder="1.0"
-                  {...field}
-                  onChange={handleDollarsChange}
-                />
+              <Input
+                type="number"
+                min="1.0"
+                step="0.1"
+                placeholder="1.0"
+                defaultValue={1.0}
+                {...field}
+                onChange={handleDollarsChange}
+              />
               </FormControl>
               <FormMessage />
             </FormItem>
