@@ -16,7 +16,7 @@ export default function Navigation() {
           className="shrink-0 ml-4"
         >
           <Button variant={"default"} className="h-9">
-            <GitHubLogoIcon className="h-4 w-4 md:mr-1" />
+            <GitHubLogoIcon className="h-4 w-4 mr-3" />
             <span>Código fuente en GitHub</span>
           </Button>
         </Link>
