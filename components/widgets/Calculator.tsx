@@ -1,4 +1,5 @@
 "use client"
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -15,9 +16,15 @@ import { useEffect, useState } from "react"
 import { Skeleton } from "../ui/skeleton"
 import { useRef } from "react"
 import { CopyToClipboard } from "react-copy-to-clipboard"
-import { ClipboardCopyIcon } from "@radix-ui/react-icons"
+import { ClipboardCopyIcon, CheckIcon } from "@radix-ui/react-icons"
 import { Button } from "../ui/button"
 import { getCotizacion } from "@/actions/getCotizacion"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 const formSchema = z.object({
   dollars: z.number().gte(1.0, {
@@ -60,7 +67,7 @@ export function Calculator() {
     }
 
     fetchData()
-  }, [form])
+  })
 
   const handleDollarsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCopied(false)
@@ -92,9 +99,18 @@ export function Calculator() {
     const pesosWithImpuestos =
       pesosWithoutTaxes + 2 * pesosWithoutTaxes30percent
 
-    form.setValue("impuestoPais", parseFloat(pesosWithoutTaxes30percent.toFixed(2)))
-    form.setValue("impuestoGanancias", parseFloat(pesosWithoutTaxes30percent.toFixed(2)))
-    form.setValue("pesosWithImpuestos", parseFloat(pesosWithImpuestos.toFixed(2)))
+    form.setValue(
+      "impuestoPais",
+      parseFloat(pesosWithoutTaxes30percent.toFixed(2))
+    )
+    form.setValue(
+      "impuestoGanancias",
+      parseFloat(pesosWithoutTaxes30percent.toFixed(2))
+    )
+    form.setValue(
+      "pesosWithImpuestos",
+      parseFloat(pesosWithImpuestos.toFixed(2))
+    )
   }
 
   return isLoading ? ( // Show a loading skeleton while fetching data
@@ -127,7 +143,7 @@ export function Calculator() {
           name="pesosWithoutTaxes"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Cantidad de PESOS (ARS) sin impuestos:</FormLabel>
+              <FormLabel>Cantidad de pesos (ARS) sin impuestos:</FormLabel>
               <FormControl>
                 <Input
                   type="number"
@@ -187,7 +203,7 @@ export function Calculator() {
           name="pesosWithImpuestos"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Cantidad de PESOS (ARS) con impuestos:</FormLabel>
+              <FormLabel>Cantidad de pesos (ARS) con impuestos:</FormLabel>
               <FormControl>
                 <Input
                   type="number"
@@ -202,17 +218,38 @@ export function Calculator() {
                   }}
                 />
               </FormControl>
-              <div>
-                <Button type="button" variant="outline" size="icon" className="h-9 shrink-0 mr-4">
-                  <CopyToClipboard
-                    text={field.value.toString()}
-                    onCopy={() => setCopied(true)}
-                  >
-                    <ClipboardCopyIcon className="h-5 w-5" />
-                  </CopyToClipboard>
-                </Button>
-                {copied ? <span style={{ color: "green" }}>Copiado!</span> : <span>Copiar!</span>}
+              <div className="flex items-center">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        className="mr-4 h-9 shrink-0"
+                      >
+                        <CopyToClipboard
+                          text={field.value.toString()}
+                          onCopy={() => setCopied(true)}
+                        >
+                          <ClipboardCopyIcon className="h-5 w-5" />
+                        </CopyToClipboard>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Copiar al portapapeles</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+
+                {copied ? (
+                  <div className="flex items-center">
+                    <CheckIcon className="mr-2 h-5 w-5 text-green-500" />
+                    <span className="text-blue-500">Copiado!</span>
+                  </div>
+                ) : null}
               </div>
+
               <FormMessage />
             </FormItem>
           )}
