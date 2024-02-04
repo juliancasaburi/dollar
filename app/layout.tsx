@@ -31,9 +31,9 @@ export default function RootLayout({
               className="group flex items-center justify-center gap-1 text-neutral-400 dark:text-neutral-600"
               aria-hidden={true}
             >
-              <CodeIcon className="h-5 w-5" />
+              <CodeIcon className="h-5 w-5 text-green-900" />
               <Button variant="link" asChild>
-                <Link href="https://github.com/juliancasaburi" target="_blank">@juliancasaburi</Link>
+                <Link href="https://github.com/juliancasaburi" target="_blank">Desarrollado por @juliancasaburi</Link>
               </Button>
             </div>
           </footer>
