@@ -27,8 +27,8 @@ import {
 } from "@/components/ui/tooltip"
 
 const formSchema = z.object({
-  dollars: z.number().gte(1.0, {
-    message: "La cantidad debe ser mayor o igual a 1.0",
+  dollars: z.number().gte(0.0, {
+    message: "La cantidad debe ser mayor o igual a 0.0",
   }),
   pesosWithoutTaxes: z.number().gte(0),
   impuestoPais: z.number().gte(0),
@@ -41,7 +41,7 @@ export function Calculator() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       dollars: 1.0,
-      pesosWithoutTaxes: 1.0,
+      pesosWithoutTaxes: 0.0,
       impuestoPais: 0,
       impuestoGanancias: 0,
       pesosWithImpuestos: 0,
@@ -72,7 +72,7 @@ export function Calculator() {
 
   const handleDollarsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCopied(false)
-    const dollarsValue = parseFloat(e.target.value) || 1
+    const dollarsValue = parseFloat(e.target.value)
     form.setValue("dollars", dollarsValue)
 
     // Fetch data and recalculate based on the new "dollars" value
@@ -88,7 +88,7 @@ export function Calculator() {
   }
 
   const updateCalculations = (ventaValue: number) => {
-    const pesosWithoutTaxes = ventaValue * form.getValues("dollars")
+    const pesosWithoutTaxes = ventaValue * (form.getValues("dollars") || 1.0)
     form.setValue("pesosWithoutTaxes", pesosWithoutTaxes)
 
     // Calculate values based on pesosWithoutTaxes and update the form fields
@@ -124,7 +124,7 @@ export function Calculator() {
               <FormControl>
               <Input
                 type="number"
-                min="1.0"
+                min="0.1"
                 step="0.1"
                 placeholder="1.0"
                 defaultValue={1.0}
