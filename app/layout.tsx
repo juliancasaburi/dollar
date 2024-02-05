@@ -5,6 +5,7 @@ import { CodeIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/button"
 import Navigation from "@/components/Navigation"
 import Link from "next/link"
+import ScrollToTop from "@/components/ui/scrollToTop"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -61,6 +62,7 @@ export default function RootLayout({
               </a>
             </div>
           </footer>
+          <ScrollToTop></ScrollToTop>
         </NextThemesProvider>
       </body>
     </html>
