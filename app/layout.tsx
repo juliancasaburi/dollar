@@ -26,15 +26,39 @@ export default function RootLayout({
         >
           <Navigation />
           <main className="flex-grow">{children}</main>
-          <footer className="py-4">
+          <footer>
             <div
               className="group flex items-center justify-center gap-1 text-neutral-400 dark:text-neutral-600"
               aria-hidden={true}
             >
+              <div className="group flex items-center relative cursor-pointer after:absolute after:bottom-2 after:left-0 after:h-0.5 after:w-0 after:bg-green-800 after:transition-all after:duration-300 hover:after:w-full">
               <CodeIcon className="h-5 w-5 text-green-900" />
-              <Button variant="link" asChild>
-                <Link href="https://github.com/juliancasaburi" target="_blank">Desarrollado por @juliancasaburi</Link>
+              <Button variant="linkNoUnderline" asChild>
+                <Link href="https://github.com/juliancasaburi" target="_blank">
+                  Desarrollado por @juliancasaburi
+                </Link>
               </Button>
+              </div>
+            </div>
+            <div className="text-center text-sm text-neutral-400 dark:text-neutral-600">
+              La información se obtiene de las APIs
+              <a
+                href="https://argentinadatos.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mx-1.5 text-primary text-primary relative cursor-pointer after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-green-800 after:transition-all after:duration-300 hover:after:w-full"
+              >
+                ArgentinaDatos
+              </a>
+              y
+              <a
+                href="https://dolarapi.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mx-1.5 text-primary text-primary relative cursor-pointer after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-green-800 after:transition-all after:duration-300 hover:after:w-full"
+              >
+                DolarApi.
+              </a>
             </div>
           </footer>
         </NextThemesProvider>
