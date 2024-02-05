@@ -49,6 +49,7 @@ export function Calculator() {
   })
 
   const [isLoading, setIsLoading] = useState(true) // State to track loading status
+  const [ventaValue, setVentaValue] = useState(0)
   const [copied, setCopied] = useState(false)
   const pesosWithImpuestosRef = useRef<HTMLInputElement | null>(null)
 
@@ -57,9 +58,9 @@ export function Calculator() {
     const fetchData = async () => {
       try {
         const data = await getCotizacion()
-        const ventaValue = data?.venta || 0
+        setVentaValue(data?.venta || 0)
 
-        updateCalculations(ventaValue)
+        updateCalculations(data?.venta || 0)
         setIsLoading(false) // Set loading state to false after fetching
       } catch (error) {
         console.error("Error fetching data:", error)
@@ -67,7 +68,7 @@ export function Calculator() {
     }
 
     fetchData()
-  })
+  }, [])
 
   const handleDollarsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCopied(false)
@@ -75,19 +76,15 @@ export function Calculator() {
     form.setValue("dollars", dollarsValue)
 
     // Fetch data and recalculate based on the new "dollars" value
-    const fetchDataAndRecalculate = async () => {
+    const recalculate = async () => {
       try {
-        const response = await fetch("https://dolarapi.com/v1/dolares/oficial")
-        const data = await response.json()
-        const ventaValue = data?.venta || 0
-
         updateCalculations(ventaValue)
       } catch (error) {
         console.error("Error fetching data:", error)
       }
     }
 
-    fetchDataAndRecalculate()
+    recalculate()
   }
 
   const updateCalculations = (ventaValue: number) => {

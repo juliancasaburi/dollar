@@ -26,23 +26,29 @@ export function HistoricValues() {
     to: new Date(),
   })
 
-  const [filteredData, setFilteredData] = useState<HistoricData[]>([]) // Add state for filtered data
+  const [filteredData, setFilteredData] = useState<HistoricData[]>([])
+  const [allData, setAllData] = useState<HistoricData[]>([])
+
+  function filterData(
+    allData: HistoricData[],
+    selectedDateRange: DateRange
+  ): HistoricData[] {
+    return allData
+      .filter(
+        (entry) =>
+          new Date(addDays(entry.fecha, 1)) >=
+            (selectedDateRange.from ?? new Date()) &&
+          new Date(entry.fecha) <= (selectedDateRange.to ?? new Date())
+      )
+      .reverse()
+  }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const allData: HistoricData[] = await getHistoricValues()
-
-        // Filter data based on the selected date range
-        const filtered = allData
-          .filter(
-            (entry) =>
-              new Date(addDays(entry.fecha, 1)) >= (selectedDateRange.from ?? new Date()) &&
-              new Date(entry.fecha) <= (selectedDateRange.to ?? new Date())
-          )
-          .reverse()
-
-        setFilteredData(filtered)
+        const data = await getHistoricValues()
+        setAllData(data)
+        setFilteredData(filterData(data, selectedDateRange))
         setIsLoading(false)
       } catch (error) {
         console.error("Error fetching data:", error)
@@ -50,7 +56,7 @@ export function HistoricValues() {
     }
 
     fetchData()
-  }, [selectedDateRange])
+  }, [])
 
   return isLoading ? ( // Show a loading skeleton while fetching data
     <Skeleton className="w-dwh h-1/2" />
@@ -61,7 +67,11 @@ export function HistoricValues() {
         className="mb-4 mt-4"
         initialFrom={selectedDateRange.from}
         initialTo={selectedDateRange.to}
-        onDateRangeChange={(range) => setSelectedDateRange(range)}
+        onDateRangeChange={(range) => {
+          setSelectedDateRange(range)
+          const filtered = filterData(allData, range)
+          setFilteredData(filtered)
+        }}
       />
       <Table>
         <TableHeader>
