@@ -59,7 +59,11 @@ export function HistoricValues() {
   }, [])
 
   return isLoading ? ( // Show a loading skeleton while fetching data
-    <Skeleton className="w-dwh h-1/2" />
+    <>
+      <Skeleton className="w-full h-72 mb-2" />
+      <Skeleton className="w-60 h-10 mb-2" />
+      <Skeleton className="w-full h-72 mb-2" />
+    </>
   ) : (
     <Fragment>
       <DollarLineChart data={filteredData} />

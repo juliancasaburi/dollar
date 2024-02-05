@@ -111,7 +111,7 @@ export function Calculator() {
   }
 
   return isLoading ? ( // Show a loading skeleton while fetching data
-    <Skeleton className="w-dwh h-screen" />
+    <Skeleton className="w-dwh h-96" />
   ) : (
     <Form {...form}>
       <form className="space-y-8">
