@@ -11,7 +11,7 @@ export default async function Home() {
         <div className="flex w-full flex-col items-start md:flex-row">
           <div className="mb-4 w-full rounded-lg border p-4 md:mr-4 lg:w-1/2">
             <h2 className="text-center mb-4 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-              Calculadora
+              Calculadora dólar tarjeta
             </h2>
             <Calculator />
           </div>
