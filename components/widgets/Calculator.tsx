@@ -31,9 +31,8 @@ const formSchema = z.object({
     message: "La cantidad debe ser mayor o igual a 0.0",
   }),
   pesosWithoutTaxes: z.number().gte(0),
-  impuestoPais: z.number().gte(0),
   impuestoGanancias: z.number().gte(0),
-  pesosWithImpuestos: z.number().gte(0),
+  pesosWithTaxes: z.number().gte(0),
 })
 
 export function Calculator() {
@@ -42,16 +41,15 @@ export function Calculator() {
     defaultValues: {
       dollars: 1.0,
       pesosWithoutTaxes: 0.0,
-      impuestoPais: 0,
       impuestoGanancias: 0,
-      pesosWithImpuestos: 0,
+      pesosWithTaxes: 0,
     },
   })
 
   const [isLoading, setIsLoading] = useState(true) // State to track loading status
   const [ventaValue, setVentaValue] = useState(0)
   const [copied, setCopied] = useState(false)
-  const pesosWithImpuestosRef = useRef<HTMLInputElement | null>(null)
+  const pesosWithTaxesRef = useRef<HTMLInputElement | null>(null)
 
   // Fetch data before component loads
   useEffect(() => {
@@ -93,20 +91,16 @@ export function Calculator() {
 
     // Calculate values based on pesosWithoutTaxes and update the form fields
     const pesosWithoutTaxes30percent = pesosWithoutTaxes * 0.3
-    const pesosWithImpuestos =
-      pesosWithoutTaxes + 2 * pesosWithoutTaxes30percent
+    const pesosWithTaxes =
+      pesosWithoutTaxes + pesosWithoutTaxes30percent
 
-    form.setValue(
-      "impuestoPais",
-      parseFloat(pesosWithoutTaxes30percent.toFixed(2))
-    )
     form.setValue(
       "impuestoGanancias",
       parseFloat(pesosWithoutTaxes30percent.toFixed(2))
     )
     form.setValue(
-      "pesosWithImpuestos",
-      parseFloat(pesosWithImpuestos.toFixed(2))
+      "pesosWithTaxes",
+      parseFloat(pesosWithTaxes.toFixed(2))
     )
   }
 
@@ -158,26 +152,6 @@ export function Calculator() {
         />
         <FormField
           control={form.control}
-          name="impuestoPais"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>+ Impuesto PAÍS (30%)</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  min="1.0"
-                  step="0.1"
-                  placeholder="1.0"
-                  disabled
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="impuestoGanancias"
           render={({ field }) => (
             <FormItem>
@@ -198,7 +172,7 @@ export function Calculator() {
         />
         <FormField
           control={form.control}
-          name="pesosWithImpuestos"
+          name="pesosWithTaxes"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Cantidad de pesos (ARS) con impuestos:</FormLabel>
@@ -211,7 +185,7 @@ export function Calculator() {
                   disabled
                   {...field}
                   ref={(el) => {
-                    pesosWithImpuestosRef.current = el
+                    pesosWithTaxesRef.current = el
                     field.ref(el)
                   }}
                 />
